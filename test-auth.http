@@ -1,0 +1,55 @@
+### Restaurant OS Backend - Auth Testing
+### Use with REST Client extension in VS Code
+
+@baseUrl = http://localhost:3000/api
+@tenantId = YOUR_TENANT_ID_HERE
+
+### 1. Signup
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "owner@restaurant.com",
+  "password": "password123",
+  "role": "owner",
+  "tenant_id": "{{tenantId}}",
+  "first_name": "John",
+  "last_name": "Doe",
+  "phone": "+1234567890"
+}
+
+### 2. Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "owner@restaurant.com",
+  "password": "password123"
+}
+
+### 3. Get Current User (use token from login response)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 4. Test Invalid Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "wrong@email.com",
+  "password": "wrongpassword"
+}
+
+### 5. Test Signup with Existing Email
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "owner@restaurant.com",
+  "password": "password123",
+  "role": "waiter",
+  "tenant_id": "{{tenantId}}",
+  "first_name": "Jane",
+  "last_name": "Smith"
+}
