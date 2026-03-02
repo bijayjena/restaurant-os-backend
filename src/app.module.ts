@@ -4,6 +4,10 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { TenantsModule } from './tenants/tenants.module';
+import { ProfilesModule } from './profiles/profiles.module';
+import { MenuItemsModule } from './menu-items/menu-items.module';
+import { OrdersModule } from './orders/orders.module';
 import { User } from './entities/user.entity';
 import { Tenant } from './entities/tenant.entity';
 import { Profile } from './entities/profile.entity';
@@ -19,7 +23,7 @@ import { Order } from './entities/order.entity';
       useFactory: () => ({
         type: 'postgres',
         host: process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT, 10) || 5432,
+        port: parseInt(process.env.DB_PORT || '5432', 10),
         username: process.env.DB_USERNAME || 'postgres',
         password: process.env.DB_PASSWORD || 'postgres',
         database: process.env.DB_NAME || 'restaurant_os',
@@ -29,6 +33,10 @@ import { Order } from './entities/order.entity';
       }),
     }),
     AuthModule,
+    TenantsModule,
+    ProfilesModule,
+    MenuItemsModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

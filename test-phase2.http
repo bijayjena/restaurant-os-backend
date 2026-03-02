@@ -1,0 +1,183 @@
+### Restaurant OS Backend - Phase 2 CRUD Testing
+### Use with REST Client extension in VS Code
+
+@baseUrl = http://localhost:3000/api
+@token = YOUR_TOKEN_HERE
+
+### ============================================
+### TENANTS
+### ============================================
+
+### 1. Create Tenant
+POST {{baseUrl}}/tenants
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Pizza Palace",
+  "is_active": true
+}
+
+### 2. Get All Tenants (with pagination)
+GET {{baseUrl}}/tenants?page=1&limit=10
+Authorization: Bearer {{token}}
+
+### 3. Get All Active Tenants
+GET {{baseUrl}}/tenants?is_active=true
+Authorization: Bearer {{token}}
+
+### 4. Get Tenant by ID
+GET {{baseUrl}}/tenants/TENANT_ID_HERE
+Authorization: Bearer {{token}}
+
+### 5. Update Tenant
+PATCH {{baseUrl}}/tenants/TENANT_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Pizza Palace Updated",
+  "logo": "https://example.com/logo.png"
+}
+
+### 6. Delete Tenant
+DELETE {{baseUrl}}/tenants/TENANT_ID_HERE
+Authorization: Bearer {{token}}
+
+### ============================================
+### PROFILES
+### ============================================
+
+### 7. Create Profile
+POST {{baseUrl}}/profiles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "user_id": "USER_ID_HERE",
+  "first_name": "Jane",
+  "last_name": "Smith",
+  "phone": "+1234567890"
+}
+
+### 8. Get All Profiles
+GET {{baseUrl}}/profiles?page=1&limit=10
+Authorization: Bearer {{token}}
+
+### 9. Get Profiles by User ID
+GET {{baseUrl}}/profiles?user_id=USER_ID_HERE
+Authorization: Bearer {{token}}
+
+### 10. Get Profile by ID
+GET {{baseUrl}}/profiles/PROFILE_ID_HERE
+Authorization: Bearer {{token}}
+
+### 11. Update Profile
+PATCH {{baseUrl}}/profiles/PROFILE_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "first_name": "Jane Updated",
+  "phone": "+9876543210"
+}
+
+### 12. Delete Profile
+DELETE {{baseUrl}}/profiles/PROFILE_ID_HERE
+Authorization: Bearer {{token}}
+
+### ============================================
+### MENU ITEMS
+### ============================================
+
+### 13. Create Menu Item
+POST {{baseUrl}}/menu-items
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Margherita Pizza",
+  "description": "Classic tomato and mozzarella",
+  "price": 12.99,
+  "category": "Pizza",
+  "is_available": true
+}
+
+### 14. Get All Menu Items
+GET {{baseUrl}}/menu-items?page=1&limit=10
+Authorization: Bearer {{token}}
+
+### 15. Get Available Menu Items
+GET {{baseUrl}}/menu-items?is_available=true
+Authorization: Bearer {{token}}
+
+### 16. Get Menu Items by Category
+GET {{baseUrl}}/menu-items?category=Pizza
+Authorization: Bearer {{token}}
+
+### 17. Get Menu Item by ID
+GET {{baseUrl}}/menu-items/MENU_ITEM_ID_HERE
+Authorization: Bearer {{token}}
+
+### 18. Update Menu Item
+PATCH {{baseUrl}}/menu-items/MENU_ITEM_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "price": 14.99,
+  "is_available": false
+}
+
+### 19. Delete Menu Item
+DELETE {{baseUrl}}/menu-items/MENU_ITEM_ID_HERE
+Authorization: Bearer {{token}}
+
+### ============================================
+### ORDERS
+### ============================================
+
+### 20. Create Order
+POST {{baseUrl}}/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "table_number": "A5",
+  "items": [
+    {
+      "menu_item_id": "MENU_ITEM_ID_1",
+      "quantity": 2
+    },
+    {
+      "menu_item_id": "MENU_ITEM_ID_2",
+      "quantity": 1
+    }
+  ],
+  "notes": "Extra cheese on pizza"
+}
+
+### 21. Get All Orders
+GET {{baseUrl}}/orders?page=1&limit=10
+Authorization: Bearer {{token}}
+
+### 22. Get Orders by Status
+GET {{baseUrl}}/orders?status=pending
+Authorization: Bearer {{token}}
+
+### 23. Get Order by ID
+GET {{baseUrl}}/orders/ORDER_ID_HERE
+Authorization: Bearer {{token}}
+
+### 24. Update Order
+PATCH {{baseUrl}}/orders/ORDER_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notes": "Updated notes"
+}
+
+### 25. Delete Order
+DELETE {{baseUrl}}/orders/ORDER_ID_HERE
+Authorization: Bearer {{token}}

@@ -16,7 +16,7 @@ import { Tenant } from '../entities/tenant.entity';
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
       signOptions: {
-        expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+        expiresIn: '7d',
       },
     }),
   ],
