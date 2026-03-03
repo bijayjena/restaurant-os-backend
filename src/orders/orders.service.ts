@@ -6,8 +6,10 @@ import { MenuItem } from '../entities/menu-item.entity';
 import { User } from '../entities/user.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 import { QueryOrderDto } from './dto/query-order.dto';
 import { PaginatedResponse } from '../common/dto/pagination.dto';
+import { isValidStatusTransition } from './entities/order-status-transition';
 
 @Injectable()
 export class OrdersService {
@@ -122,5 +124,25 @@ export class OrdersService {
   async remove(id: string, currentUser: User): Promise<void> {
     const order = await this.findOne(id, currentUser);
     await this.orderRepository.remove(order);
+  }
+
+  async updateStatus(id: string, updateStatusDto: UpdateOrderStatusDto, currentUser: User): Promise<Order> {
+    const order = await this.findOne(id, currentUser);
+    const { status: newStatus } = updateStatusDto;
+
+    // Validate status transition
+    if (!isValidStatusTransition(order.status, newStatus)) {
+      throw new BadRequestException(
+        `Invalid status transition from ${order.status} to ${newStatus}`,
+      );
+    }
+
+    // Log status transition
+    console.log(
+      `Order ${order.id} status changed from ${order.status} to ${newStatus} by user ${currentUser.email} (${currentUser.role})`,
+    );
+
+    order.status = newStatus;
+    return this.orderRepository.save(order);
   }
 }

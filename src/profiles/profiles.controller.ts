@@ -4,15 +4,18 @@ import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { QueryProfileDto } from './dto/query-profile.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { User } from '../entities/user.entity';
+import { User, UserRole } from '../entities/user.entity';
 
 @Controller('profiles')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
 
   @Post()
+  @Roles(UserRole.OWNER, UserRole.MANAGER)
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createProfileDto: CreateProfileDto, @CurrentUser() user: User) {
     return this.profilesService.create(createProfileDto, user);
@@ -29,6 +32,7 @@ export class ProfilesController {
   }
 
   @Patch(':id')
+  @Roles(UserRole.OWNER, UserRole.MANAGER)
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProfileDto: UpdateProfileDto,
@@ -38,6 +42,7 @@ export class ProfilesController {
   }
 
   @Delete(':id')
+  @Roles(UserRole.OWNER, UserRole.MANAGER)
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User) {
     return this.profilesService.remove(id, user);
