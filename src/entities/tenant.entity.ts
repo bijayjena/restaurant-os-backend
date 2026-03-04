@@ -12,7 +12,7 @@ export class Tenant {
   name: string;
 
   @Column({ nullable: true })
-  logo: string;
+  logo: string | null;
 
   @Column({ default: true })
   is_active: boolean;

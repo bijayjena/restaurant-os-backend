@@ -1,0 +1,166 @@
+### Restaurant OS Backend - Phase 4 File Upload Testing
+### Note: REST Client doesn't support file uploads well
+### Use Postman, Insomnia, or cURL for actual testing
+
+@baseUrl = http://localhost:3000/api
+@token = YOUR_TOKEN_HERE
+@menuItemId = YOUR_MENU_ITEM_ID
+@tenantId = YOUR_TENANT_ID
+
+### ============================================
+### FILE UPLOAD ENDPOINTS
+### ============================================
+
+### 1. Upload Menu Item Image (Owner/Manager)
+### Use Postman or cURL for this
+POST {{baseUrl}}/storage/menu-items/{{menuItemId}}/image
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+# In Postman:
+# - Select "Body" tab
+# - Choose "form-data"
+# - Add key "file" with type "File"
+# - Select your image file
+
+### cURL Example:
+# curl -X POST \
+#   http://localhost:3000/api/storage/menu-items/uuid-here/image \
+#   -H "Authorization: Bearer your-token" \
+#   -F "file=@/path/to/image.jpg"
+
+### ============================================
+
+### 2. Upload Tenant Logo (Owner/Manager)
+POST {{baseUrl}}/storage/tenants/{{tenantId}}/logo
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+# In Postman:
+# - Select "Body" tab
+# - Choose "form-data"
+# - Add key "file" with type "File"
+# - Select your logo file
+
+### cURL Example:
+# curl -X POST \
+#   http://localhost:3000/api/storage/tenants/uuid-here/logo \
+#   -H "Authorization: Bearer your-token" \
+#   -F "file=@/path/to/logo.png"
+
+### ============================================
+
+### 3. Delete Menu Item Image (Owner/Manager)
+DELETE {{baseUrl}}/storage/menu-items/{{menuItemId}}/image
+Authorization: Bearer {{token}}
+
+### ============================================
+
+### 4. Delete Tenant Logo (Owner/Manager)
+DELETE {{baseUrl}}/storage/tenants/{{tenantId}}/logo
+Authorization: Bearer {{token}}
+
+### ============================================
+
+### 5. Access Uploaded File (No Auth Required)
+GET http://localhost:3000/uploads/menu-items/menu-item-1234567890-abc123.jpg
+
+### ============================================
+
+### 6. Get Menu Item with Image URL
+GET {{baseUrl}}/menu-items/{{menuItemId}}
+Authorization: Bearer {{token}}
+
+### Response will include:
+# {
+#   "id": "uuid",
+#   "name": "Pizza",
+#   "image": "/uploads/menu-items/menu-item-123-abc.jpg",
+#   ...
+# }
+
+### ============================================
+
+### 7. Get Tenant with Logo URL
+GET {{baseUrl}}/tenants/{{tenantId}}
+Authorization: Bearer {{token}}
+
+### Response will include:
+# {
+#   "id": "uuid",
+#   "name": "Restaurant Name",
+#   "logo": "/uploads/tenants/tenant-logo-456-def.png",
+#   ...
+# }
+
+### ============================================
+### ERROR SCENARIOS
+### ============================================
+
+### 8. Try to upload without file (400 Bad Request)
+POST {{baseUrl}}/storage/menu-items/{{menuItemId}}/image
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+### 9. Try to upload as Waiter (403 Forbidden)
+# Use waiter token
+POST {{baseUrl}}/storage/menu-items/{{menuItemId}}/image
+Authorization: Bearer WAITER_TOKEN_HERE
+Content-Type: multipart/form-data
+
+### 10. Try to upload for non-existent menu item (404 Not Found)
+POST {{baseUrl}}/storage/menu-items/00000000-0000-0000-0000-000000000000/image
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+### ============================================
+### TESTING WITH CURL
+### ============================================
+
+### Upload Menu Item Image
+# curl -X POST \
+#   http://localhost:3000/api/storage/menu-items/YOUR_MENU_ITEM_ID/image \
+#   -H "Authorization: Bearer YOUR_TOKEN" \
+#   -F "file=@./test-image.jpg"
+
+### Upload Tenant Logo
+# curl -X POST \
+#   http://localhost:3000/api/storage/tenants/YOUR_TENANT_ID/logo \
+#   -H "Authorization: Bearer YOUR_TOKEN" \
+#   -F "file=@./test-logo.png"
+
+### Delete Menu Item Image
+# curl -X DELETE \
+#   http://localhost:3000/api/storage/menu-items/YOUR_MENU_ITEM_ID/image \
+#   -H "Authorization: Bearer YOUR_TOKEN"
+
+### Delete Tenant Logo
+# curl -X DELETE \
+#   http://localhost:3000/api/storage/tenants/YOUR_TENANT_ID/logo \
+#   -H "Authorization: Bearer YOUR_TOKEN"
+
+### Download Uploaded File
+# curl -O http://localhost:3000/uploads/menu-items/menu-item-123-abc.jpg
+
+### ============================================
+### TESTING FILE VALIDATION
+### ============================================
+
+### Test with file > 5MB (should fail)
+# curl -X POST \
+#   http://localhost:3000/api/storage/menu-items/YOUR_MENU_ITEM_ID/image \
+#   -H "Authorization: Bearer YOUR_TOKEN" \
+#   -F "file=@./large-file.jpg"
+# Expected: 400 Bad Request - "File size exceeds 5MB limit"
+
+### Test with invalid file type (should fail)
+# curl -X POST \
+#   http://localhost:3000/api/storage/menu-items/YOUR_MENU_ITEM_ID/image \
+#   -H "Authorization: Bearer YOUR_TOKEN" \
+#   -F "file=@./document.pdf"
+# Expected: 400 Bad Request - "Invalid file type..."
+
+### Test with valid image types (should succeed)
+# JPEG: curl -X POST ... -F "file=@./image.jpg"
+# PNG:  curl -X POST ... -F "file=@./image.png"
+# WebP: curl -X POST ... -F "file=@./image.webp"

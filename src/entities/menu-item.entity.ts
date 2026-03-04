@@ -19,7 +19,7 @@ export class MenuItem {
   price: number;
 
   @Column({ nullable: true })
-  image: string;
+  image: string | null;
 
   @Column({ default: true })
   is_available: boolean;
