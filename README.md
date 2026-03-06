@@ -21,14 +21,20 @@ A production-ready NestJS backend for Restaurant Operating System with complete 
 - ✅ Password hashing with bcrypt
 - ✅ JWT token authentication
 - ✅ CORS configuration
+- ✅ **Dapr security integration**
+- ✅ **Secrets management with Dapr**
+- ✅ **Request signing and verification**
+- ✅ **Security headers middleware**
+- ✅ **Audit logging for sensitive operations**
 
 ### Production Ready
-- ✅ Global exception filter
+- ✅ Global exception handling
 - ✅ Request/response logging
-- ✅ Swagger/OpenAPI documentation
-- ✅ Environment-based configuration
-- ✅ TypeORM with PostgreSQL
-- ✅ Static file serving
+- ✅ API documentation (Swagger)
+- ✅ Rate limiting
+- ✅ Environment configuration
+- ✅ Performance monitoring
+- ✅ **Dapr distributed runtime integration**
 
 ## 📋 Prerequisites
 
@@ -222,6 +228,7 @@ npm run start:prod
 - [Phase 3: RBAC](PHASE3-RBAC.md)
 - [Phase 4: File Upload](PHASE4-FILE-UPLOAD.md)
 - [Phase 5: Production](PHASE5-PRODUCTION.md)
+- [Dapr Security Integration](DAPR-SECURITY.md)
 - [API Reference](API-REFERENCE.md)
 - [RBAC Permissions Matrix](RBAC-PERMISSIONS-MATRIX.md)
 - [File Upload Guide](FILE-UPLOAD-GUIDE.md)
@@ -236,6 +243,8 @@ npm run start:prod
 - **Documentation:** Swagger/OpenAPI
 - **File Upload:** Multer
 - **Rate Limiting:** @nestjs/throttler
+- **Distributed Runtime:** Dapr (optional)
+- **Security:** Dapr secrets management, request signing, HMAC verification
 
 ## 📄 License
 

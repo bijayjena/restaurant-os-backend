@@ -12,6 +12,7 @@ import { ProfilesModule } from './profiles/profiles.module';
 import { MenuItemsModule } from './menu-items/menu-items.module';
 import { OrdersModule } from './orders/orders.module';
 import { StorageModule } from './storage/storage.module';
+import { DaprModule } from './dapr/dapr.module';
 import { User } from './entities/user.entity';
 import { Tenant } from './entities/tenant.entity';
 import { Profile } from './entities/profile.entity';
@@ -46,6 +47,7 @@ import { Order } from './entities/order.entity';
         logging: process.env.NODE_ENV === 'development',
       }),
     }),
+    DaprModule,
     AuthModule,
     TenantsModule,
     ProfilesModule,
