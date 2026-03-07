@@ -1,5 +1,11 @@
 import { IsEmail, IsString, MinLength, IsEnum, IsUUID, IsOptional } from 'class-validator';
-import { UserRole } from '../../entities/user.entity';
+
+export enum UserRole {
+  OWNER = 'owner',
+  MANAGER = 'manager',
+  KITCHEN = 'kitchen',
+  WAITER = 'waiter',
+}
 
 export class SignupDto {
   @IsEmail()

@@ -1,9 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../../entities/user.entity';
+import { AuthService } from '../auth.service.drizzle';
 
 export interface JwtPayload {
   sub: string;
@@ -14,10 +12,7 @@ export interface JwtPayload {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-  ) {
+  constructor(private authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -25,11 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<User> {
-    const user = await this.userRepository.findOne({
-      where: { id: payload.sub, is_active: true },
-      relations: ['tenant'],
-    });
+  async validate(payload: JwtPayload) {
+    const user = await this.authService.findUserById(payload.sub);
 
     if (!user) {
       throw new UnauthorizedException('User not found or inactive');
@@ -38,3 +30,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return user;
   }
 }
+
